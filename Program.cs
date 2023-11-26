@@ -1,11 +1,19 @@
-﻿//array challenges
+﻿string str = "The quick brown fox jumps over the lazy dog.";
+// convert the message into a char array
+char[] charMessage = str.ToCharArray();
+// Reverse the chars
+Array.Reverse(charMessage);
 
-string[] array = {"B123","C234","A345","C15","B177","G3003","C235","B179"};
 
-foreach(string el in array){
-    if(el.StartsWith('B')){
-            Console.WriteLine($"{el} starts with 'B'!");
-    }
+int x = 0;
+// count the o's
+foreach (char i in charMessage) {
+    if (i == 'o') {
+        x++; 
+    } 
 }
-
-Console.WriteLine();
+// convert it back to a string
+string new_message = new String(charMessage);
+// print it out
+Console.WriteLine(new_message);
+Console.WriteLine($"'o' appears {x} times.");
