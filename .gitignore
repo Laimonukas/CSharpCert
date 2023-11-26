@@ -1,0 +1,3 @@
+#ignoring build artefacts
+**/bin/
+**/obj/
