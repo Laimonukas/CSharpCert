@@ -67,15 +67,19 @@ Console.ReadLine();
 
 //// Updated code here:
 
+
+#nullable disable
+
 string[] studentNames = {"Sophia","Andrew","Emma","Logan"};
 int assignmentCount = 5;
 Dictionary<string,int[]> studentAssignments = new Dictionary<string, int[]>(){
-    {"Sophia",[90,86,87,98,100]},
-    {"Andrew",[92,89,81,96,90]},
-    {"Emma",[90,85,87,98,68]},
-    {"Logan",[90,95,87,88,96]}
+    {"Sophia",[90, 86, 87, 98, 100, 94, 90 ]},
+    {"Andrew",[92, 89, 81, 96, 90, 89 ]},
+    {"Emma",[90, 85, 87, 98, 68, 89, 89, 89]},
+    {"Logan",[90, 95, 87, 88, 96, 96 ]}
 };
 Dictionary<string,float> studentScores = new Dictionary<string, float>();
+Dictionary<string,float> studentExtraScores = new Dictionary<string, float>();
 string commandLine = "";
 int[] oldGrades = [];
 int[] newGrades = [];
@@ -119,21 +123,30 @@ void GetStudentInformation(){
         Console.WriteLine($"{studentEntry.Key}: {String.Join(',',studentEntry.Value)}");
 
         float scoreSum = 0.0f;
+        float extraSum = 0.0f;
         for (int i = 0; i < studentEntry.Value.Length; i++){
             if (i<assignmentCount){
                 scoreSum += studentEntry.Value[i];
             }else{
-                scoreSum += (float)studentEntry.Value[i] * 0.1f;
+                extraSum += (float)studentEntry.Value[i] * 0.1f;
             }
         }
-        studentScores.Add(studentEntry.Key,scoreSum/assignmentCount);
+        studentScores.Add(studentEntry.Key,scoreSum);
+        studentExtraScores.Add(studentEntry.Key,extraSum);
     }
 
     Console.WriteLine("Evaluation:");
-    Console.WriteLine("Student\t\tGrade\n");
+    Console.WriteLine("Student\tExam Scores\t\tOverall\tGrade\t\tExtra Credit");
 
     foreach(KeyValuePair<string,float> studentScore in studentScores){
-        Console.WriteLine($"{studentScore.Key}:\t\t{studentScore.Value} , {GetLetterGrade(studentScore.Value)}");
+        var localScoreSum = studentScore.Value;
+        var examScore = studentScore.Value/assignmentCount;
+        var overallScore = (studentScore.Value+studentExtraScores[studentScore.Key]) / assignmentCount;
+        var gradeLetter = GetLetterGrade(overallScore);
+        var studentExtraScoreAverage = studentExtraScores[studentScore.Key] * 10 / (studentAssignments[studentScore.Key].Length - assignmentCount);
+        var extraCreditPoints = overallScore - examScore;
+
+        Console.WriteLine($"{studentScore.Key}\t\t{examScore:F1}\t\t{overallScore:F2}\t\t{gradeLetter}\t\t{studentExtraScoreAverage:F0} ({extraCreditPoints:F2} pts)");
     }
     
     Console.WriteLine("Continue? Y/N");
@@ -296,6 +309,8 @@ void RemoveStudent(){
         RemoveStudent();
     }
 }
+
+
 
 
 Main();
