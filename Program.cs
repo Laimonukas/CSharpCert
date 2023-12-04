@@ -1,39 +1,39 @@
 ﻿/*
-Conditions:
+Code project 1 - write code that validates integer input
 
-You must use either the do-while statement or the while statement as an outer game loop.
-The hero and the monster will start with 10 health points.
-All attacks will be a value between 1 and 10.
-The hero will attack first.
-Print the amount of health the monster lost and their remaining health.
-If the monster's health is greater than 0, it can attack the hero.
-Print the amount of health the hero lost and their remaining health.
-Continue this sequence of attacking until either the monster's health or hero's health is zero or less.
-Print the winner.
+Here are the conditions that your first coding project must implement:
+Your solution must include either a do-while or while iteration.
+Before the iteration block: your solution must use a Console.WriteLine() statement to prompt the user for an integer value between 5 and 10.
+
+Inside the iteration block:
+
+Your solution must use a Console.ReadLine() statement to obtain input from the user.
+Your solution must ensure that the input is a valid representation of an integer.
+If the integer value isn't between 5 and 10, your code must use a Console.WriteLine() statement to prompt the user for an integer value between 5 and 10.
+Your solution must ensure that the integer value is between 5 and 10 before exiting the iteration.
+Below (after) the iteration code block: your solution must use a Console.WriteLine() statement to inform the user that their input value has been accepted.
 */
+#nullable disable
 
-int playerHealth = 10;
-int monsterHealth = 10;
+Console.WriteLine("Input int value between 5 and 10");
+var validInput = false;
+string response = "default";
 
-var attack = new Random();
-
-
-while(playerHealth > 0 && monsterHealth > 0){
-    var currentAttack = attack.Next(1,11);
-    monsterHealth = monsterHealth - currentAttack;
-    monsterHealth = monsterHealth <= 0 ? 0:monsterHealth;
-    Console.WriteLine($"Hero attacked the monster for: {currentAttack} damage. Monster has {monsterHealth} remaining health.");
-    if (monsterHealth <= 0){
-        Console.WriteLine($"Hero has defeated the Monster!");
-        return;
+do
+{
+    string consoleInput = Console.ReadLine();
+    if(int.TryParse(consoleInput,out int parsedResult)){
+        if (parsedResult>5&&parsedResult<10)
+        {
+            response = $"Your input ({parsedResult}) has been accepted";
+            validInput = true;
+        }else{
+            Console.WriteLine($"Bad input: ({parsedResult}), enter int between 5 and 10;");
+        }
+    }else{
+        Console.WriteLine("Entered invalid input, try again.");
     }
+} while (!validInput);
 
-    currentAttack = attack.Next(1,11);
-    playerHealth = playerHealth - currentAttack;
-    playerHealth = playerHealth <= 0 ? 0:playerHealth;
-    Console.WriteLine($"Monster attacked the Hero for: {currentAttack} damage. Hero has {playerHealth} remaining health.");
-    if (playerHealth <= 0){
-        Console.WriteLine($"Monster has defeated the Hero!");
-        return;
-    }
-}
+Console.WriteLine(response);
+
