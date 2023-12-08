@@ -1,4 +1,19 @@
 ﻿using System;
+using System.IO;
+
+/*To ensure that animal ages and physical descriptions are complete, your code must:
+
+Assign a valid numeric value to petAge for any animal that has been assigned data in the ourAnimals array but has not been assigned an age.
+Assign a valid string to petPhysicalDescription for any animal that has been assigned data in the ourAnimals array but has not been assigned a physical description.
+Verify that physical descriptions have an assigned value. Assigned values cannot have zero characters. Any further requirement is up to you.
+To ensure that animal nicknames and personality descriptions are complete, your code must:
+
+Assign a valid string to petNickname for any animal that has been assigned data in the ourAnimals array but has not been assigned a nickname.
+Assign a valid string to petPersonalityDescription for any animal that has been assigned data in the ourAnimals array but has not been assigned a personality description.
+Verify that nicknames and personality descriptions have an assigned value. Assigned values cannot have zero characters. Any further requirement is up to you.
+*/
+
+
 
 // the ourAnimals array will store the following: 
 string animalSpecies = "";
@@ -12,6 +27,10 @@ string animalNickname = "";
 int maxPets = 8;
 string? readResult;
 string menuSelection = "";
+int petCount = 0;
+string anotherPet = "y";
+bool validEntry = false;
+int petAge = 0;
 
 // array used to store runtime data, there is no persisted data
 string[,] ourAnimals = new string[maxPets, 6];
@@ -55,6 +74,7 @@ for (int i = 0; i < maxPets; i++)
             animalPhysicalDescription = "";
             animalPersonalityDescription = "";
             animalNickname = "";
+
             break;
 
         default:
@@ -76,10 +96,9 @@ for (int i = 0; i < maxPets; i++)
     ourAnimals[i, 5] = "Personality: " + animalPersonalityDescription;
 }
 
+// display the top-level menu options
 do
 {
-    // display the top-level menu options
-
     Console.Clear();
 
     Console.WriteLine("Welcome to the Contoso PetFriends app. Your main menu options are:");
@@ -115,7 +134,7 @@ do
                     Console.WriteLine();
                     for (int j = 0; j < 6; j++)
                     {
-                        Console.WriteLine(ourAnimals[i, j]);
+                        Console.WriteLine(ourAnimals[i, j].ToString());
                     }
                 }
             }
@@ -126,8 +145,17 @@ do
 
         case "2":
             // Add a new animal friend to the ourAnimals array
-            string anotherPet = "y";
-            int petCount = 0;
+            //
+            // The ourAnimals array contains
+            //    1. the species (cat or dog). a required field
+            //    2. the ID number - for example C17
+            //    3. the pet's age. can be blank at initial entry.
+            //    4. the pet's nickname. can be blank.
+            //    5. a description of the pet's physical appearance. can be blank.
+            //    6. a description of the pet's personality. can be blank.
+
+            anotherPet = "y";
+            petCount = 0;
             for (int i = 0; i < maxPets; i++)
             {
                 if (ourAnimals[i, 0] != "ID #: ")
@@ -143,8 +171,6 @@ do
 
             while (anotherPet == "y" && petCount < maxPets)
             {
-                bool validEntry = false;
-                
                 // get species (cat or dog) - string animalSpecies is a required field 
                 do
                 {
@@ -171,7 +197,6 @@ do
                 // get the pet's age. can be ? at initial entry.
                 do
                 {
-                    int petAge;
                     Console.WriteLine("Enter the pet's age or enter ? if unknown");
                     readResult = Console.ReadLine();
                     if (readResult != null)
@@ -188,7 +213,8 @@ do
                     }
                 } while (validEntry == false);
 
-                // get a description of the pet's physical appearance/condition - animalPhysicalDescription can be blank.
+
+                // get a description of the pet's physical appearance - animalPhysicalDescription can be blank.
                 do
                 {
                     Console.WriteLine("Enter a physical description of the pet (size, color, gender, weight, housebroken)");
@@ -201,7 +227,8 @@ do
                             animalPhysicalDescription = "tbd";
                         }
                     }
-                } while (animalPhysicalDescription == "");
+                } while (validEntry == false);
+
 
                 // get a description of the pet's personality - animalPersonalityDescription can be blank.
                 do
@@ -216,7 +243,8 @@ do
                             animalPersonalityDescription = "tbd";
                         }
                     }
-                } while (animalPersonalityDescription == "");
+                } while (validEntry == false);
+
 
                 // get the pet's nickname. animalNickname can be blank.
                 do
@@ -231,7 +259,7 @@ do
                             animalNickname = "tbd";
                         }
                     }
-                } while (animalNickname == "");
+                } while (validEntry == false);
 
                 // store the pet information in the ourAnimals array (zero based)
                 ourAnimals[petCount, 0] = "ID #: " + animalID;
@@ -259,6 +287,7 @@ do
 
                     } while (anotherPet != "y" && anotherPet != "n");
                 }
+                //NOTE: The value of anotherPet (either "y" or "n") is evaluated in the while statement expression - at the top of the while loop
             }
 
             if (petCount >= maxPets)
@@ -271,15 +300,78 @@ do
             break;
 
         case "3":
-            // Ensure animal ages and physical descriptions are complete
+             // Ensure animal ages and physical descriptions are complete
             Console.WriteLine("Challenge Project - please check back soon to see progress.");
             Console.WriteLine("Press the Enter key to continue.");
             readResult = Console.ReadLine();
             break;
 
         case "4":
-            // Ensure animal nicknames and personality descriptions are complete
-            Console.WriteLine("Challenge Project - please check back soon to see progress.");
+            //  Ensure animal nicknames and personality descriptions are complete
+            // The ourAnimals array contains
+            //    1. the species (cat or dog). a required field
+            //    2. the ID number - for example C17
+            //    3. the pet's age. can be blank at initial entry.
+            //    4. the pet's nickname. can be blank.
+            //    5. a description of the pet's physical appearance. can be blank.
+            //    6. a description of the pet's personality. can be blank.
+
+            /*Specification
+            You need to develop a feature that ensures animal nicknames and personality descriptions are complete.
+
+            This feature must:
+                -Be enabled inside the appropriate application branch (must not overwrite the code in the code branch for menu option 2).
+                -Skip over any animal in the ourAnimals array when the value of pet ID is set to the value default value.
+                -Display the pet ID value and prompt the user for an updated data value if ourAnimals array data is missing or incomplete.
+                -Ensure that a valid string is assigned to animalNickname for all animals in the ourAnimals array that have assigned data.
+                -Ensure that a valid string is assigned to animalPersonalityDescription for all animals in the ourAnimals array that have assigned data.
+                -Enforce the following validation rules for petNickname and petPersonalityDescription:
+                    Values cannot be null.
+                    Values cannot have zero characters.
+                    Any further restriction is up to the developer.
+                -Inform the application user when all data requirements are met, pausing the application to ensure the message can be seen and responded to.
+            */
+
+            for (int i = 0; i < maxPets; i++){
+                switch (ourAnimals[i,0])
+                {
+                    case "ID #: ":
+                        break;
+                    default:
+                        if(ourAnimals[i,3] =="Nickname: "){
+                            var exitCondition = true;
+                            do
+                            {
+                                Console.WriteLine($"Enter a nickname for:{ourAnimals[i,0]}");
+                                readResult = Console.ReadLine();
+                                if (readResult!=null&&readResult.Length>0)
+                                {
+                                    ourAnimals[i,3] = "Nickname: " + readResult;
+                                    exitCondition = false;
+                                    break;
+                                }
+                            } while (exitCondition);
+                        }
+
+                        if (ourAnimals[i,5]=="Personality: ")
+                        {
+                            var exitCondition = false;
+                            do
+                            {
+                                Console.WriteLine($"Enter a personality description for: {ourAnimals[i,0]}");
+                                readResult = Console.ReadLine();
+                                if (readResult!=null&&readResult.Length>0)
+                                {
+                                    ourAnimals[i,5] = "Personality: " + readResult;
+                                    exitCondition = false;
+                                    break;
+                                }
+                            } while (exitCondition);
+                        }
+                        break;
+                }
+            }
+            Console.WriteLine("Nickname and personality description fields are complete for all of our friends.");
             Console.WriteLine("Press the Enter key to continue.");
             readResult = Console.ReadLine();
             break;
