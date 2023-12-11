@@ -1,12 +1,9 @@
-﻿//Write code to reverse each word in a message
+﻿//Exercise - Complete a challenge to parse a string of orders, sort the orders and tag possible errors
 
-string pangram = "The quick brown fox jumps over the lazy dog";
-var splitArray = pangram.Split(' ');
-for (int i = 0; i < splitArray.Length; i++)
+string orderStream = "B123,C234,A345,C15,B177,G3003,C235,B179";
+
+var orderArray = orderStream.Split(',').Order();
+foreach (var order in orderArray)
 {
-    var charArray = splitArray[i].ToCharArray().Reverse();
-    splitArray[i] = String.Join("",charArray);
+    Console.WriteLine(order.Length == 4 ? $"{order}":$"{order}\t- Error");
 }
-pangram = String.Join(" ",splitArray);
-
-Console.WriteLine(pangram);
