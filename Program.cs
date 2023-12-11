@@ -1,8 +1,12 @@
-﻿string[] pallets = { "B14", "A11", "B12", "A13" };
+﻿//Write code to reverse each word in a message
 
-Console.WriteLine("Sorted...");
-Array.Sort(pallets);
-foreach (var pallet in pallets)
+string pangram = "The quick brown fox jumps over the lazy dog";
+var splitArray = pangram.Split(' ');
+for (int i = 0; i < splitArray.Length; i++)
 {
-    Console.WriteLine($"-- {pallet}");
+    var charArray = splitArray[i].ToCharArray().Reverse();
+    splitArray[i] = String.Join("",charArray);
 }
+pangram = String.Join(" ",splitArray);
+
+Console.WriteLine(pangram);
