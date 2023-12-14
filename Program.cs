@@ -1,45 +1,26 @@
-﻿//Dice mini-game challenge
-
-Random random = new Random();
-
-Console.WriteLine("Would you like to play? (Y/N)");
-if (ShouldPlay()) 
+﻿try
 {
-    PlayGame();
+    Process1();
 }
-
-void PlayGame() 
+catch
 {
-    var play = true;
-
-    while (play) 
-    {
-        var target = randomRoll(6);
-        var roll = randomRoll(7);
-
-        Console.WriteLine($"Roll a number greater than {target} to win!");
-        Console.WriteLine($"You rolled a {roll}");
-        Console.WriteLine(WinOrLose(roll,target));
-        Console.WriteLine("\nPlay again? (Y/N)");
-
-        play = ShouldPlay();
-    }
+    Console.WriteLine("An exception has occurred");
 }
 
-bool ShouldPlay(){
-    var result = Console.ReadLine().Trim().ToLower();
-    switch(result){
-        case "y":
-            return true;
-        default:
-            return false;
-    }
+Console.WriteLine("Exit program");
+
+static void Process1()
+{
+    WriteMessage();
 }
 
-int randomRoll(int maxBounds){
-    return random.Next(1,maxBounds);
-}
+static void WriteMessage()
+{
+    double float1 = 3000.0;
+    double float2 = 0.0;
+    int number1 = 3000;
+    int number2 = 0;
 
-string WinOrLose(int rolled, int target){
-    return rolled > target ? "You have won!":"You have lost.";
+    Console.WriteLine(float1 / float2);
+    Console.WriteLine(number1 / number2);
 }
